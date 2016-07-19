@@ -14,13 +14,35 @@ public class WorkoutCrudData {
 	private Long calories;
 	private Sport sportEnum;
 	private Double speedAvg;
+	private Integer durationRank;
+	private Integer distanceRank;
+
+	public Integer getDurationRank() {
+		return durationRank;
+	}
+
+	public void setDurationRank(Integer durationRank) {
+		this.durationRank = durationRank;
+	}
+
+	public Integer getDistanceRank() {
+		return distanceRank;
+	}
+
+	public void setDistanceRank(Integer distanceRank) {
+		this.distanceRank = distanceRank;
+	}
 
 	public Double getSpeedAvg() {
 		return speedAvg;
 	}
 
 	public void setSpeedAvg(Double speedAvg) {
-		this.speedAvg = speedAvg;
+		if (speedAvg == 0) {
+			this.speedAvg = null;
+		} else {
+			this.speedAvg = speedAvg;
+		}
 	}
 
 	public Sport getSportEnum() {
@@ -60,7 +82,11 @@ public class WorkoutCrudData {
 	}
 
 	public void setDistance(Double distance) {
-		this.distance = distance;
+		if (distance == 0) {
+			this.distance = null;
+		} else {
+			this.distance = distance;
+		}
 	}
 
 	public String getSport() {
