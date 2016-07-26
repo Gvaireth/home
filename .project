@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>home</name>
+	<name>EndoMinion</name>
 	<comment></comment>
 	<projects>
-		<project>endo2java</project>
+		<project>endo2javaOld</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
