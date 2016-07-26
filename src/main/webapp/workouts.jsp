@@ -23,11 +23,13 @@ table, th, td {
 	<table>
 	<tr>
 	<td>no.</td>
-	<td>Start</td>
+	<td>Start time</td>
 	<td>Duration</td>
-	<td>Distance km</td>
+	<td>Duration<br>rank #</td>
+	<td>Distance<br>km</td>
+	<td>Distance<br>rank #</td>
 	<td>Calories</td>
-	<td>Avg km/h</td>
+	<td>Avg speed<br>km/h</td>
 	<td>Activity</td>
 	</tr>
 		<c:forEach items="${data}" var="workout" varStatus="status">
@@ -35,7 +37,9 @@ table, th, td {
 			<td>${size-status.index }</td>
 				<td>${workout.readableStartTime} </td>
 				<td>${workout.readableDuration} </td>
+				<td>${workout.durationRank} </td>
 				<td>${workout.distance}</td>
+				<td>${workout.distanceRank} </td>
 				<td>${workout.calories} </td>
 				<td>${workout.speedAvg} </td>
 				<td>${workout.sport} </td>

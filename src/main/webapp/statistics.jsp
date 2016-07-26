@@ -60,22 +60,54 @@ table, th, td {
 		</c:forEach>
 	</table>
 	<br><br>
-	Longest Workouts
+	Top Duration Workouts
 	<br><br>
 	<table>
 	<tr>
-	<td>Start</td>
+	<td>Start time</td>
 	<td>Duration</td>
-	<td>Distance km</td>
+	<td>Duration<br>rank #</td>
+	<td>Distance<br>km</td>
+	<td>Distance<br>rank #</td>
 	<td>Calories</td>
-	<td>Avg km/h</td>
+	<td>Avg speed<br>km/h</td>
 	<td>Activity</td>
 	</tr>
-		<c:forEach items="${greatestDuration}" var="workout" varStatus="status">
+		<c:forEach items="${topDuration}" var="workout" varStatus="status">
 			<tr>
 				<td>${workout.readableStartTime} </td>
 				<td>${workout.readableDuration} </td>
+				<td>${workout.durationRank} </td>
 				<td>${workout.distance}</td>
+				<td>${workout.distanceRank} </td>
+				<td>${workout.calories} </td>
+				<td>${workout.speedAvg} </td>
+				<td>${workout.sport} </td>
+			</tr>
+		</c:forEach>
+	</table>
+	
+		<br><br>
+	Top Distance Workouts
+	<br><br>
+	<table>
+	<tr>
+	<td>Start time</td>
+	<td>Duration</td>
+	<td>Duration<br>rank #</td>
+	<td>Distance<br>km</td>
+	<td>Distance<br>rank #</td>
+	<td>Calories</td>
+	<td>Avg speed<br>km/h</td>
+	<td>Activity</td>
+	</tr>
+		<c:forEach items="${topDistance}" var="workout" varStatus="status">
+			<tr>
+				<td>${workout.readableStartTime} </td>
+				<td>${workout.readableDuration} </td>
+				<td>${workout.durationRank} </td>
+				<td>${workout.distance}</td>
+				<td>${workout.distanceRank} </td>
 				<td>${workout.calories} </td>
 				<td>${workout.speedAvg} </td>
 				<td>${workout.sport} </td>

@@ -41,6 +41,7 @@ public class EndoServiceImpl implements EndoService, ServletContextAware {
 				System.out.println("null workout");
 			}
 		}
+		statisticsCalculaor.calculateRanks(converted);
 		return converted;
 	}
 

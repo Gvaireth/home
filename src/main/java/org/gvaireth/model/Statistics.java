@@ -5,7 +5,16 @@ import java.util.List;
 public class Statistics {
 	private WorkoutTotalCrudData total;
 	private List<WorkoutTotalCrudData> totalPerSport;
-	private List<WorkoutCrudData> longest;
+	private List<WorkoutCrudData> topDuration;
+	private List<WorkoutCrudData> topDistance;
+
+	public List<WorkoutCrudData> getTopDistance() {
+		return topDistance;
+	}
+
+	public void setTopDistance(List<WorkoutCrudData> topDistance) {
+		this.topDistance = topDistance;
+	}
 
 	public WorkoutTotalCrudData getTotal() {
 		return total;
@@ -28,12 +37,12 @@ public class Statistics {
 		return "Statistics [total=" + total + ", totalPerSport=" + totalPerSport + "]";
 	}
 
-	public List<WorkoutCrudData> getGreatestDuration() {
-		return longest;
+	public List<WorkoutCrudData> getTopDuration() {
+		return topDuration;
 	}
 
-	public void setLongest(List<WorkoutCrudData> longest) {
-		this.longest = longest;
+	public void setTopDuration(List<WorkoutCrudData> longest) {
+		this.topDuration = longest;
 	}
 
 }

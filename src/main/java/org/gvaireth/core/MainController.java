@@ -56,7 +56,8 @@ public class MainController {
 	public ModelAndView statistics(@RequestParam(defaultValue = "all") String action, Model model) {
 		model.addAttribute("statistics", service.getStatistics());
 		model.addAttribute("totalPerSport", service.getStatistics().getTotalPerSport());
-		model.addAttribute("greatestDuration", service.getStatistics().getGreatestDuration());
+		model.addAttribute("topDuration", service.getStatistics().getTopDuration());
+		model.addAttribute("topDistance", service.getStatistics().getTopDistance());
 		System.out.println("displaying statistic: " + action);
 
 		return new ModelAndView("statistics.jsp");

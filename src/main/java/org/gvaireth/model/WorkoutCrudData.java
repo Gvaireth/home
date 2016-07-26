@@ -16,6 +16,15 @@ public class WorkoutCrudData {
 	private Double speedAvg;
 	private Integer durationRank;
 	private Integer distanceRank;
+	private Integer speedAvgRank;
+
+	public Integer getSpeedAvgRank() {
+		return speedAvgRank;
+	}
+
+	public void setSpeedAvgRank(Integer speedAvgRank) {
+		this.speedAvgRank = speedAvgRank;
+	}
 
 	public Integer getDurationRank() {
 		return durationRank;

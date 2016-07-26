@@ -23,10 +23,60 @@ public class StatisticsCalculator {
 	@Autowired
 	private WorkoutConverter workoutConverter;
 
-	Statistics getStatistics(List<WorkoutCrudData> workouts) {
+	Comparator<WorkoutCrudData> distanceComparator = (WorkoutCrudData w1, WorkoutCrudData w2) -> {
+		if (w1.getDistance() != null && w2.getDistance() != null) {
+			return w1.getDistance().compareTo(w2.getDistance());
+		} else if (w1.getDistance() == null) {
+			return -1;
+		} else if (w2.getDistance() == null) {
+			return 1;
+		} else {
+			return 0;
+		}
+	};
+
+	Comparator<WorkoutCrudData> durationComparator = (WorkoutCrudData w1, WorkoutCrudData w2) -> {
+		if (w1.getDuration() != null && w2.getDuration() != null) {
+			return w1.getDuration().compareTo(w2.getDuration());
+		} else if (w1.getDuration() == null) {
+			return -1;
+		} else if (w2.getDuration() == null) {
+			return 1;
+		} else {
+			return 0;
+		}
+	};
+
+	public Statistics getStatistics(List<WorkoutCrudData> workouts) {
 		Statistics statistics = new Statistics();
-		statistics.setTotal(getTotal(workouts, Sport.ALL));
 		Set<Sport> sportsPresent = getSportsPresent(workouts);
+
+		setTotal(workouts, statistics, sportsPresent);
+
+		setTopDuration(workouts, statistics);
+
+		setTopDistance(workouts, statistics);
+
+		System.out.println(statistics);
+		return statistics;
+	}
+
+	private void setTopDistance(List<WorkoutCrudData> workouts, Statistics statistics) {
+		List<WorkoutCrudData> topDistance = getTopDistance(workouts);
+		Collections.sort(topDistance, distanceComparator);
+		Collections.reverse(topDistance);
+		statistics.setTopDistance(topDistance);
+	}
+
+	private void setTopDuration(List<WorkoutCrudData> workouts, Statistics statistics) {
+		List<WorkoutCrudData> topDuration = getTopDuration(workouts);
+		Collections.sort(topDuration, durationComparator);
+		Collections.reverse(topDuration);
+		statistics.setTopDuration(topDuration);
+	}
+
+	private void setTotal(List<WorkoutCrudData> workouts, Statistics statistics, Set<Sport> sportsPresent) {
+		statistics.setTotal(getTotal(workouts, Sport.ALL));
 		List<WorkoutTotalCrudData> totalPerSport = new ArrayList<>();
 		for (Sport sport : sportsPresent) {
 			totalPerSport.add(getTotal(workouts, sport));
@@ -34,17 +84,6 @@ public class StatisticsCalculator {
 		Collections.sort(totalPerSport);
 		Collections.reverse(totalPerSport);
 		statistics.setTotalPerSport(totalPerSport);
-		List<WorkoutCrudData> greatestDuration = getLongest(workouts, sportsPresent);
-		Collections.sort(greatestDuration, new Comparator<WorkoutCrudData>() {
-
-			@Override
-			public int compare(WorkoutCrudData o1, WorkoutCrudData o2) {
-				return (int) (o2.getDuration() - o1.getDuration());
-			}
-		});
-		statistics.setLongest(greatestDuration);
-		System.out.println(statistics);
-		return statistics;
 	}
 
 	private Set<Sport> getSportsPresent(List<WorkoutCrudData> workouts) {
@@ -55,20 +94,65 @@ public class StatisticsCalculator {
 		return sportsPresent;
 	}
 
-	private List<WorkoutCrudData> getLongest(List<WorkoutCrudData> workouts, Set<Sport> sportsPresent) {
+	private List<WorkoutCrudData> getTopDuration(List<WorkoutCrudData> workouts) {
 		Map<Sport, WorkoutCrudData> perSportMax = new HashMap<>();
 		for (WorkoutCrudData workout : workouts) {
-			if (!perSportMax.containsKey(workout.getSportEnum())) {
+			if (workout.getDurationRank() != null && workout.getDurationRank() == 1) {
 				perSportMax.put(workout.getSportEnum(), workout);
-			} else {
-				Long curDuration = workout.getDuration();
-				Long maxDuration = perSportMax.get(workout.getSportEnum()).getDuration();
-				if (curDuration > maxDuration) {
-					perSportMax.put(workout.getSportEnum(), workout);
-				}
 			}
 		}
 		return new ArrayList<>(perSportMax.values());
+	}
+
+	private List<WorkoutCrudData> getTopDistance(List<WorkoutCrudData> workouts) {
+		Map<Sport, WorkoutCrudData> perSportMax = new HashMap<>();
+		for (WorkoutCrudData workout : workouts) {
+			if (workout.getDistanceRank() != null && workout.getDistanceRank() == 1) {
+				perSportMax.put(workout.getSportEnum(), workout);
+			}
+		}
+		return new ArrayList<>(perSportMax.values());
+	}
+
+	public void calculateRanks(List<WorkoutCrudData> workouts) {
+
+		Map<Sport, List<WorkoutCrudData>> workoutsBySport = new HashMap<>();
+		Set<Sport> sportsPresent = getSportsPresent(workouts);
+		for (Sport sport : sportsPresent) {
+			workoutsBySport.put(sport, new ArrayList<>());
+		}
+		for (WorkoutCrudData workout : workouts) {
+			workoutsBySport.get(workout.getSportEnum()).add(workout);
+		}
+		for (Sport sport : workoutsBySport.keySet()) {
+			List<WorkoutCrudData> currentWorkouts = workoutsBySport.get(sport);
+			calculateDistanceRank(currentWorkouts);
+			calculateDurationRank(currentWorkouts);
+		}
+		return;
+
+	}
+
+	private void calculateDistanceRank(List<WorkoutCrudData> currentWorkouts) {
+		Collections.sort(currentWorkouts, distanceComparator);
+		Collections.reverse(currentWorkouts);
+		int rank = 1;
+		for (WorkoutCrudData workout : currentWorkouts) {
+			if (workout.getDistance() != null) {
+				workout.setDistanceRank(rank++);
+			}
+		}
+	}
+
+	private void calculateDurationRank(List<WorkoutCrudData> currentWorkouts) {
+		Collections.sort(currentWorkouts, durationComparator);
+		Collections.reverse(currentWorkouts);
+		int rank = 1;
+		for (WorkoutCrudData workout : currentWorkouts) {
+			if (workout.getDuration() != null) {
+				workout.setDurationRank(rank++);
+			}
+		}
 	}
 
 	private WorkoutTotalCrudData getTotal(List<WorkoutCrudData> workouts, Sport sport) {
