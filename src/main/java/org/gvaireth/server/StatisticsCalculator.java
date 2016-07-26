@@ -47,32 +47,48 @@ public class StatisticsCalculator {
 		}
 	};
 
+	Comparator<WorkoutCrudData> speedAvgComparator = (WorkoutCrudData w1, WorkoutCrudData w2) -> {
+		if (w1.getSpeedAvg() != null && w2.getSpeedAvg() != null) {
+			return w1.getSpeedAvg().compareTo(w2.getSpeedAvg());
+		} else if (w1.getSpeedAvg() == null) {
+			return -1;
+		} else if (w2.getSpeedAvg() == null) {
+			return 1;
+		} else {
+			return 0;
+		}
+	};
+
 	public Statistics getStatistics(List<WorkoutCrudData> workouts) {
 		Statistics statistics = new Statistics();
 		Set<Sport> sportsPresent = getSportsPresent(workouts);
-
 		setTotal(workouts, statistics, sportsPresent);
-
 		setTopDuration(workouts, statistics);
-
 		setTopDistance(workouts, statistics);
-
+		setTopSpeedAvg(workouts, statistics);
 		System.out.println(statistics);
 		return statistics;
 	}
 
 	private void setTopDistance(List<WorkoutCrudData> workouts, Statistics statistics) {
-		List<WorkoutCrudData> topDistance = getTopDistance(workouts);
+		List<WorkoutCrudData> topDistance = generateTopDistance(workouts);
 		Collections.sort(topDistance, distanceComparator);
 		Collections.reverse(topDistance);
 		statistics.setTopDistance(topDistance);
 	}
 
 	private void setTopDuration(List<WorkoutCrudData> workouts, Statistics statistics) {
-		List<WorkoutCrudData> topDuration = getTopDuration(workouts);
+		List<WorkoutCrudData> topDuration = generateTopDuration(workouts);
 		Collections.sort(topDuration, durationComparator);
 		Collections.reverse(topDuration);
 		statistics.setTopDuration(topDuration);
+	}
+
+	private void setTopSpeedAvg(List<WorkoutCrudData> workouts, Statistics statistics) {
+		List<WorkoutCrudData> topSpeedAvg = generateTopSpeedAvg(workouts);
+		Collections.sort(topSpeedAvg, speedAvgComparator);
+		Collections.reverse(topSpeedAvg);
+		statistics.setTopSpeedAvg(topSpeedAvg);
 	}
 
 	private void setTotal(List<WorkoutCrudData> workouts, Statistics statistics, Set<Sport> sportsPresent) {
@@ -94,7 +110,7 @@ public class StatisticsCalculator {
 		return sportsPresent;
 	}
 
-	private List<WorkoutCrudData> getTopDuration(List<WorkoutCrudData> workouts) {
+	private List<WorkoutCrudData> generateTopDuration(List<WorkoutCrudData> workouts) {
 		Map<Sport, WorkoutCrudData> perSportMax = new HashMap<>();
 		for (WorkoutCrudData workout : workouts) {
 			if (workout.getDurationRank() != null && workout.getDurationRank() == 1) {
@@ -104,10 +120,20 @@ public class StatisticsCalculator {
 		return new ArrayList<>(perSportMax.values());
 	}
 
-	private List<WorkoutCrudData> getTopDistance(List<WorkoutCrudData> workouts) {
+	private List<WorkoutCrudData> generateTopDistance(List<WorkoutCrudData> workouts) {
 		Map<Sport, WorkoutCrudData> perSportMax = new HashMap<>();
 		for (WorkoutCrudData workout : workouts) {
 			if (workout.getDistanceRank() != null && workout.getDistanceRank() == 1) {
+				perSportMax.put(workout.getSportEnum(), workout);
+			}
+		}
+		return new ArrayList<>(perSportMax.values());
+	}
+
+	private List<WorkoutCrudData> generateTopSpeedAvg(List<WorkoutCrudData> workouts) {
+		Map<Sport, WorkoutCrudData> perSportMax = new HashMap<>();
+		for (WorkoutCrudData workout : workouts) {
+			if (workout.getSpeedAvgRank() != null && workout.getSpeedAvgRank() == 1) {
 				perSportMax.put(workout.getSportEnum(), workout);
 			}
 		}
@@ -128,6 +154,7 @@ public class StatisticsCalculator {
 			List<WorkoutCrudData> currentWorkouts = workoutsBySport.get(sport);
 			calculateDistanceRank(currentWorkouts);
 			calculateDurationRank(currentWorkouts);
+			calculateSpeedAvgRank(currentWorkouts);
 		}
 		return;
 
@@ -151,6 +178,17 @@ public class StatisticsCalculator {
 		for (WorkoutCrudData workout : currentWorkouts) {
 			if (workout.getDuration() != null) {
 				workout.setDurationRank(rank++);
+			}
+		}
+	}
+
+	private void calculateSpeedAvgRank(List<WorkoutCrudData> currentWorkouts) {
+		Collections.sort(currentWorkouts, speedAvgComparator);
+		Collections.reverse(currentWorkouts);
+		int rank = 1;
+		for (WorkoutCrudData workout : currentWorkouts) {
+			if (workout.getSpeedAvg() != null) {
+				workout.setSpeedAvgRank(rank++);
 			}
 		}
 	}

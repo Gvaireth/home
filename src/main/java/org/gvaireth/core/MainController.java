@@ -58,6 +58,7 @@ public class MainController {
 		model.addAttribute("totalPerSport", service.getStatistics().getTotalPerSport());
 		model.addAttribute("topDuration", service.getStatistics().getTopDuration());
 		model.addAttribute("topDistance", service.getStatistics().getTopDistance());
+		model.addAttribute("topSpeedAvg", service.getStatistics().getTopSpeedAvg());
 		System.out.println("displaying statistic: " + action);
 
 		return new ModelAndView("statistics.jsp");

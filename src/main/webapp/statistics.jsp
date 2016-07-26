@@ -59,6 +59,37 @@ table, th, td {
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<br><br>
+	Top Distance Workouts
+	<br><br>
+	<table>
+	<tr>
+	<td>Start time</td>
+	<td>Duration</td>
+	<td>Duration<br>rank #</td>
+	<td>Distance<br>km</td>
+	<td>Distance<br>rank #</td>
+	<td>Calories</td>
+	<td>Avg speed<br>km/h</td>
+	<td>Avg speed<br>rank #</td>
+	<td>Activity</td>
+	</tr>
+		<c:forEach items="${topDistance}" var="workout" varStatus="status">
+			<tr>
+				<td>${workout.readableStartTime} </td>
+				<td>${workout.readableDuration} </td>
+				<td>${workout.durationRank} </td>
+				<td>${workout.distance}</td>
+				<td>${workout.distanceRank} </td>
+				<td>${workout.calories} </td>
+				<td>${workout.speedAvg} </td>
+				<td>${workout.speedAvgRank} </td>
+				<td>${workout.sport} </td>
+			</tr>
+		</c:forEach>
+	</table>
+	
 	<br><br>
 	Top Duration Workouts
 	<br><br>
@@ -71,6 +102,7 @@ table, th, td {
 	<td>Distance<br>rank #</td>
 	<td>Calories</td>
 	<td>Avg speed<br>km/h</td>
+	<td>Avg speed<br>rank #</td>
 	<td>Activity</td>
 	</tr>
 		<c:forEach items="${topDuration}" var="workout" varStatus="status">
@@ -82,13 +114,14 @@ table, th, td {
 				<td>${workout.distanceRank} </td>
 				<td>${workout.calories} </td>
 				<td>${workout.speedAvg} </td>
+				<td>${workout.speedAvgRank} </td>
 				<td>${workout.sport} </td>
 			</tr>
 		</c:forEach>
 	</table>
 	
-		<br><br>
-	Top Distance Workouts
+	<br><br>
+	Top Average Speed Workouts
 	<br><br>
 	<table>
 	<tr>
@@ -99,9 +132,10 @@ table, th, td {
 	<td>Distance<br>rank #</td>
 	<td>Calories</td>
 	<td>Avg speed<br>km/h</td>
+	<td>Avg speed<br>rank #</td>
 	<td>Activity</td>
 	</tr>
-		<c:forEach items="${topDistance}" var="workout" varStatus="status">
+		<c:forEach items="${topSpeedAvg}" var="workout" varStatus="status">
 			<tr>
 				<td>${workout.readableStartTime} </td>
 				<td>${workout.readableDuration} </td>
@@ -110,9 +144,12 @@ table, th, td {
 				<td>${workout.distanceRank} </td>
 				<td>${workout.calories} </td>
 				<td>${workout.speedAvg} </td>
+				<td>${workout.speedAvgRank} </td>
 				<td>${workout.sport} </td>
 			</tr>
 		</c:forEach>
 	</table>
+	<br><br>
+	<br><br>
 </body>
 </html>

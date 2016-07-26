@@ -7,6 +7,15 @@ public class Statistics {
 	private List<WorkoutTotalCrudData> totalPerSport;
 	private List<WorkoutCrudData> topDuration;
 	private List<WorkoutCrudData> topDistance;
+	private List<WorkoutCrudData> topSpeedAvg;
+
+	public List<WorkoutCrudData> getTopSpeedAvg() {
+		return topSpeedAvg;
+	}
+
+	public void setTopSpeedAvg(List<WorkoutCrudData> topSpeedAvg) {
+		this.topSpeedAvg = topSpeedAvg;
+	}
 
 	public List<WorkoutCrudData> getTopDistance() {
 		return topDistance;

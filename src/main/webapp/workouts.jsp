@@ -30,6 +30,7 @@ table, th, td {
 	<td>Distance<br>rank #</td>
 	<td>Calories</td>
 	<td>Avg speed<br>km/h</td>
+	<td>Avg speed<br>rank #</td>
 	<td>Activity</td>
 	</tr>
 		<c:forEach items="${data}" var="workout" varStatus="status">
@@ -42,6 +43,7 @@ table, th, td {
 				<td>${workout.distanceRank} </td>
 				<td>${workout.calories} </td>
 				<td>${workout.speedAvg} </td>
+				<td>${workout.speedAvgRank} </td>
 				<td>${workout.sport} </td>
 			</tr>
 		</c:forEach>
